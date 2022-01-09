@@ -39,6 +39,8 @@ General Movie Game Commands
 * startMovieGame
 * answerQuestion
 * nextQuestion
+* seeLeaderboard
+* seeStats
 
 Movie Lists Commands
 * uploadListCSVFile
@@ -57,6 +59,7 @@ User
 | userId      | Unique identifier |
 | usernmae    | (unique) What the user will be called |
 | password    | Hashed password |
+| loggedIn    | Information about session |
 
 User Statistics
 |   Property  | Description |
@@ -75,11 +78,144 @@ Movie List
 | public      | Status of list (boolean) true === public, false === private|
 | movies      | List of movie value objects |
 
-# Value Objects
+## Value Objects
 Movie
 |   Property  | Description |
 | ----------- | ----------- |
-| movieId | Unique identifer for movie | 
-| title | Title of a film |
+| movieId     | Unique identifer for movie | 
+| title       | Title of a film |
 | releaseYear | Year the film came out |
 
+
+
+# REST Design
+
+## Endpoints
+| Description                | URL Fragment                  | HTTP Method | Path Parameters | Representations        |
+|----------------------------|-------------------------------|-------------|-----------------|------------------------|
+| create user                | /users                        | POST        |                 | User Register          |
+| delete user                | /users/{userId}               | DELETE      | userId          |                        |
+| log user in                | /users/login/{userId}         | PUT         | userId          | User Login             |
+| log user out               | /users/logout/{userId}        | PUT         | userId          |                        |
+| get question               | /questions                    | GET         |                 | Get Question           |
+| answer question            | /questions/{userId}/{movieId} | PUT         | userId, movieId | Answer Question        |
+| get personal stats         | /stats/{userId}               | GET         | userId          | Get Personal Stats     |
+| see leaderboard stats      | /stats                        | GET         |                 | Get Leaderboard Stats  |
+| upload movie list csv file | /lists/{userId}               | POST        | userId          | Upload Movie List      |
+| update movie list          | /lists/{listId}               | PUT         | listId          | Update Movie List      |
+| delete movie list          | /lists/{listId}               | DELETE      | listId          |                        |
+| start movie list game      | /lists/questions/{listId}     | GET         | listId          | Get Question           |
+| answer movie list question | /lists/questions/{listId}     | PUT         | listId          | Answer Question        |
+| get public movie lists     | /lists                        | GET         |                 | Get Public Movie Lists |
+
+## Representations
+
+### User Register
+
+```json
+    {
+        "username": "movieGuy",
+        "password": "supersecret",
+        "confirmPassword": "supersecret"
+    }
+```
+### User Login 
+```json
+    {
+        "username": "movieGuy",
+        "password": "supersecret"
+    }
+```
+### Get Question
+```json
+    {
+        "movieId": "ADEF334978",
+        "movie": "movie title",
+        "correctAnswer": 2012,
+        "answers": [2012, 2014, 2009, 2013]
+    }
+```
+### Answer Question
+```json
+    {
+        "answer": 2012,
+        "correctAnswer": 2013
+    }
+```
+
+### Get Personal Stats
+```json
+    {
+        "totalQuestionsAnswerd": 500,
+        "correctAnswers": 200,
+        "incorrectAnswers": 300,
+        "longestStreak": 50
+    }
+```
+
+### Get Leaderboard Stats
+```json
+    [
+        {
+            "userName": "someName",
+            "totalQuestionsAnswerd": 800,
+            "correctAnswers": 500,
+            "incorrectAnswers": 300,
+            "longestStreak": 50
+        },
+        {
+            "userName": "someName2",
+            "totalQuestionsAnswerd": 600,
+            "correctAnswers": 300,
+            "incorrectAnswers": 300,
+            "longestStreak": 40
+        },
+        {
+            "userName": "someName3",
+            "totalQuestionsAnswerd": 500,
+            "correctAnswers": 200,
+            "incorrectAnswers": 300,
+            "longestStreak": 30
+        }
+    ]
+```
+### Upload Movie List
+
+csv file
+```
+    title, release date,
+    movie, 2001
+    movie2, 2004
+    movie3, 1998
+```
+```json
+    {
+        "name": "List Name",
+        "public": true
+    }
+```
+
+### Update Movie List
+```json
+    {
+        "name": "List Name",
+        "public": true
+    }
+```
+### Get Public Movie Lists
+```json
+    [
+        {
+            "listId": "EILH3749837",
+            "name": "list name 1",
+        },
+        {
+            "listId": "EILH739837837",
+            "name": "list name 2"
+        },
+        {
+            "listId": "EI749IOUH837",
+            "name": "list name 3"
+        }
+    ]
+```
