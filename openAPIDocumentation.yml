@@ -1,0 +1,164 @@
+openapi: 3.0.3
+info:
+  title: Movie Date Trivia API
+  version: v1
+# Can be reused all over
+components:
+  schemas:
+    Question:
+      type: object
+      properties:
+        movieId:
+          type: string
+          readOnly: true
+        title:
+          type: string
+        correctAnswer:
+          type: number
+        answers:
+          type: array
+          items:
+            type: number
+      example:
+        movieId: ADEF334978
+        title: 'The Avengers'
+        correctAnswer: 2012
+        answers: [2012, 2014, 2009, 2013]
+  parameters:
+    userId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+    movieId:
+      name: movieId
+      in: path
+      required: true
+      schema:
+        type: string
+    listId:
+      name: listId
+      in: path
+      required: true
+      schema:
+        type: string
+paths:
+  /users:
+    post:
+      tags:
+        - Account
+      summary: Create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                  format: password
+            # not required      
+            example:
+              username: movieGuy
+              password: supersecret
+              confirmPassword: supersecret
+      responses:
+        201: 
+          description: User created
+        400:
+          description: Invalid request
+    
+  /users/{userId}:
+    delete:
+      tags:
+        - Account
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      summary: Delete user
+      responses:
+        204:
+          description: User deleted
+
+  /users/login/{userId}:
+    put:
+      tags:
+        - Account
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      summary: Login user
+      responses:
+        200:
+          description: User logged in
+          
+  /users/logout/{userId}:
+    put:
+      tags:
+        - Account
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      summary: Logout user
+      responses:
+        200:
+          description: User logged out
+  
+  /questions:
+    get:
+      tags:
+        - General Game
+      summary: Get Question
+      responses:
+        200:
+          description: ok
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Question'
+
+  /questions/{userId}/movies/{movieId}:
+    put:
+      tags:
+        - General Game
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/movieId'
+      summary: Answer Question
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - answer
+                - correctAnswer
+              properties:
+                answer:
+                  type: number
+                correctAnswer:
+                  type: number
+            # not required      
+            example:
+              answer: 2012
+              correctAnswer: 2013
+      responses:
+        200:
+          description: ok
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Question'
+  
+            
+            
+        
+    
+      
+      
+  

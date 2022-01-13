@@ -54,76 +54,68 @@ Movie Lists Commands
 ## Entities
 
 User
-|   Property  | Description |
-| ----------- | ----------- |
-| userId      | Unique identifier |
+|   Property  |             Description               |
+| ----------- | ------------------------------------- |
+| userId      | Unique identifier                     |
 | usernmae    | (unique) What the user will be called |
-| password    | Hashed password |
-| loggedIn    | Information about session |
+| password    | Hashed password                       |
+| loggedIn    | Information about session             |
 
 User Statistics
-|   Property  | Description |
-| ----------- | ----------- |
-| userId      | Unique identifier for user who owns stats |
-| totalQuestionsAnswerd    | Count of all answerd questions from general game |
-| totalCorrectQuestions    |  Count of all correct answerd questions from general game|
-| totalIncorrectQuestions    | Count of all Incorrect answerd questions from general game|
-| longestStreak   |  Count of user's longest count of correct questions from general game in one sitting|
+|         Property         |                                   Description                                       |
+| ------------------------ | ----------------------------------------------------------------------------------- |
+| userId                   | Unique identifier for user who owns stats                                           |
+| totalQuestionsAnswerd    | Count of all answerd questions from general game                                    |
+| totalCorrectQuestions    | Count of all correct answerd questions from general game                            |
+| totalIncorrectQuestions  | Count of all Incorrect answerd questions from general game                          |
+| longestStreak            | Count of user's longest count of correct questions from general game in one sitting | 
 
 Movie List
-|   Property  | Description |
-| ----------- | ----------- |
-| userId      | Unique identifier for user who owns list |
-| listName    | Name of list |
-| public      | Status of list (boolean) true === public, false === private|
-| movies      | List of movie value objects |
+|   Property  |                       Description                           |
+| ----------- | ----------------------------------------------------------- |
+| userId      | Unique identifier for user who owns list                    |
+| listName    | Name of list                                                |
+| public      | Status of list (boolean) true === public, false === private |
+| movies      | List of movie value objects                                 |
 
 ## Value Objects
 Movie
-|   Property  | Description |
-| ----------- | ----------- |
+|   Property  |         Description        |
+| ----------- | -------------------------- |
 | movieId     | Unique identifer for movie | 
-| title       | Title of a film |
-| releaseYear | Year the film came out |
+| title       | Title of a film            |
+| releaseYear | Year the film came out     |
 
 
 
 # REST Design
 
 ## Endpoints
-| Description                | URL Fragment                  | HTTP Method | Path Parameters | Representations        |
-|----------------------------|-------------------------------|-------------|-----------------|------------------------|
-| create user                | /users                        | POST        |                 | User Register          |
-| delete user                | /users/{userId}               | DELETE      | userId          |                        |
-| log user in                | /users/login/{userId}         | PUT         | userId          | User Login             |
-| log user out               | /users/logout/{userId}        | PUT         | userId          |                        |
-| get question               | /questions                    | GET         |                 | Get Question           |
-| answer question            | /questions/{userId}/{movieId} | PUT         | userId, movieId | Answer Question        |
-| get personal stats         | /stats/{userId}               | GET         | userId          | Get Personal Stats     |
-| see leaderboard stats      | /stats                        | GET         |                 | Get Leaderboard Stats  |
-| upload movie list csv file | /lists/{userId}               | POST        | userId          | Upload Movie List      |
-| update movie list          | /lists/{listId}               | PUT         | listId          | Update Movie List      |
-| delete movie list          | /lists/{listId}               | DELETE      | listId          |                        |
-| start movie list game      | /lists/questions/{listId}     | GET         | listId          | Get Question           |
-| answer movie list question | /lists/questions/{listId}     | PUT         | listId          | Answer Question        |
-| get public movie lists     | /lists                        | GET         |                 | Get Public Movie Lists |
+| Description                | URL Fragment                         | HTTP Method | Path Parameters | Representations        |
+|----------------------------|--------------------------------------|-------------|-----------------|------------------------|
+| create user                | /users                               | POST        |                 | User Credentials       |
+| delete user                | /users/{userId}                      | DELETE      | userId          |                        |
+| log user in                | /users/login/{userId}                | PUT         | userId          | User Credentials       |
+| log user out               | /users/logout/{userId}               | PUT         | userId          |                        |
+| get question               | /questions                           | GET         |                 | Get Question           |
+| answer question            | /questions/{userId}/movies/{movieId} | PUT         | userId, movieId | Answer Question        |
+| get personal stats         | /stats/{userId}                      | GET         | userId          | Get Personal Stats     |
+| see leaderboard stats      | /stats                               | GET         |                 | Get Leaderboard Stats  |
+| upload movie list csv file | /lists/{userId}                      | POST        | userId          | Upload Movie List      |
+| update movie list          | /lists/{listId}                      | PUT         | listId          | Update Movie List      |
+| delete movie list          | /lists/{listId}                      | DELETE      | listId          |                        |
+| start movie list game      | /lists/questions/{listId}            | GET         | listId          | Get Question           |
+| answer movie list question | /lists/questions/{listId}            | PUT         | listId          | Answer Question        |
+| get public movie lists     | /lists                               | GET         |                 | Get Public Movie Lists |
 
 ## Representations
 
-### User Register
+### User Credentials
 
 ```json
     {
         "username": "movieGuy",
         "password": "supersecret",
-        "confirmPassword": "supersecret"
-    }
-```
-### User Login 
-```json
-    {
-        "username": "movieGuy",
-        "password": "supersecret"
     }
 ```
 ### Get Question
