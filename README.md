@@ -105,7 +105,7 @@ Movie
 | update movie list          | /lists/{listId}                      | PUT         | listId          | Update Movie List      |
 | delete movie list          | /lists/{listId}                      | DELETE      | listId          |                        |
 | start movie list game      | /lists/questions/{listId}            | GET         | listId          | Get Question           |
-| answer movie list question | /lists/questions/{listId}            | PUT         | listId          | Answer Question        |
+| answer movie list question | /lists/questions/{listId}            | PUT         | listId          | Answer List Question   |
 | get public movie lists     | /lists                               | GET         |                 | Get Public Movie Lists |
 
 ## Representations
@@ -130,6 +130,14 @@ Movie
 ### Answer Question
 ```json
     {
+        "answer": 2012,
+        "correctAnswer": 2013
+    }
+```
+### Answer List Question
+```json
+    {
+        "questionsAnswerdInList": 1,
         "answer": 2012,
         "correctAnswer": 2013
     }

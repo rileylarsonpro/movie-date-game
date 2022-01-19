@@ -24,6 +24,32 @@ components:
         title: 'The Avengers'
         correctAnswer: 2012
         answers: [2012, 2014, 2009, 2013]
+    Stats:
+      type: object
+      properties:
+        userName:
+          type: string
+        totalQuestionsAnswerd:
+          type: number
+        correctAnswers:
+          type: number
+        incorrectAnswers: 
+          type: number
+        longestStreak:
+          type: number
+      example:
+        userName: 'someName'
+        totalQuestionsAnswerd: 800
+        correctAnswers: 500
+        incorrectAnswers: 300
+        longestStreak: 50
+    Leaderboard:
+      type: array
+      items:
+        $ref: '#/components/schemas/Stats'
+    File:
+      type: string
+      format: binary
   parameters:
     userId:
       name: userId
@@ -112,7 +138,7 @@ paths:
     get:
       tags:
         - General Game
-      summary: Get Question
+      summary: Get question
       responses:
         200:
           description: ok
@@ -128,7 +154,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/userId'
         - $ref: '#/components/parameters/movieId'
-      summary: Answer Question
+      summary: Answer question
       requestBody:
         required: true
         content:
@@ -149,11 +175,170 @@ paths:
               correctAnswer: 2013
       responses:
         200:
+          description: Response Recorded
+  /stats/{userId}:
+    get:
+      tags: 
+        - Game Statistics
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      summary: Get personal stats
+      responses:
+        200: 
+          description: ok
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'
+  /stats:
+    get:
+      tags: 
+        - Game Statistics
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      summary: Get leaderboard stats
+      responses:
+        200: 
+          description: ok
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leaderboard'
+  /lists/{userId}:
+    post:
+      tags: 
+        - Lists
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      summary: Upload movie list csv file 
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - name
+                - public
+              properties:
+                name:
+                  type: string
+                public:
+                  type: boolean
+                csv: 
+                  $ref: '#/components/schemas/File'
+            example:
+              answer: 'List Name'
+              correctAnswer: true
+      responses:
+        201: 
+          description: List Created
+  /lists/{listId}:
+    put:
+      tags: 
+        - Lists
+      parameters:
+        - $ref: '#/components/parameters/listId'
+      summary: Update movie list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                public:
+                  type: boolean
+            example:
+              answer: 'List Name'
+              correctAnswer: false
+      responses:
+        200: 
+          description: List Updated
+    delete:
+      tags: 
+        - Lists
+      parameters:
+        - $ref: '#/components/parameters/listId'
+      summary: Delete movie list
+      responses:
+        204: 
+          description: List Deleted
+  /lists/questions/{listId}:
+    get:
+      tags: 
+        - Lists
+      parameters:
+         - $ref: '#/components/parameters/listId'
+      summary: Start movie list game
+      responses:
+        200:
           description: ok
           content: 
             application/json:
               schema: 
                 $ref: '#/components/schemas/Question'
+    put:
+      tags: 
+        - Lists
+      parameters:
+        - $ref: '#/components/parameters/listId'
+      summary: Answer movie list question
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - questionsAnswerdInList
+                - answer
+                - correctAnswer
+              properties:
+                questionsAnswerdInList:
+                  type: number
+                answer:
+                  type: number
+                correctAnswer:
+                  type: number
+            example:
+              questionsAnswerdInList: 1
+              answer: 'List Name'
+              correctAnswer: false
+      responses:
+        200:
+          description: ok
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Question'
+  /lists:
+    get:
+      tags:
+        - Lists
+      summary: get public movie lists
+      responses:
+        200:
+          description: ok
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    listId:
+                      type: string
+                    name:
+                      type: string
+                          
+        
+    
+      
+        
+          
   
             
             
