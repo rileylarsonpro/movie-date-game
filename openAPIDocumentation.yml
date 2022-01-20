@@ -49,7 +49,7 @@ components:
         $ref: '#/components/schemas/Stats'
     File:
       type: string
-      format: binary
+      format: base64
   parameters:
     userId:
       name: userId
@@ -111,6 +111,9 @@ paths:
       responses:
         204:
           description: User deleted
+        401:
+          description: Not authenticated
+
 
   /users/login/{userId}:
     put:
@@ -121,7 +124,9 @@ paths:
       summary: Login user
       responses:
         200:
-          description: User logged in
+          description: Authenticated
+        400:
+          description: Invalid request
           
   /users/logout/{userId}:
     put:
@@ -133,6 +138,8 @@ paths:
       responses:
         200:
           description: User logged out
+        403:
+          description: Access denied
   
   /questions:
     get:
@@ -146,6 +153,12 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/Question'
+        401:
+          description: Not authenticated
+        403:
+          description: Access denied
+        404: 
+          description: Not found
 
   /questions/{userId}/movies/{movieId}:
     put:
@@ -176,6 +189,14 @@ paths:
       responses:
         200:
           description: Response Recorded
+        400:
+          description: Invalid request
+        401:
+          description: Not authenticated
+        403:
+          description: Access denied
+        404: 
+          description: Not found
   /stats/{userId}:
     get:
       tags: 
@@ -190,6 +211,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stats'
+        401:
+          description: Not authenticated
+        403:
+          description: Access denied
+        404: 
+          description: Not found
   /stats:
     get:
       tags: 
@@ -204,6 +231,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Leaderboard'
+        401:
+          description: Not authenticated
+        403:
+          description: Access denied
+        404: 
+          description: Not found
+          
   /lists/{userId}:
     post:
       tags: 
@@ -233,6 +267,13 @@ paths:
       responses:
         201: 
           description: List Created
+        400:
+          description: Invalid request
+        401:
+          description: Not authenticated
+        403:
+          description: Access denied
+          
   /lists/{listId}:
     put:
       tags: 
@@ -257,6 +298,14 @@ paths:
       responses:
         200: 
           description: List Updated
+        400:
+          description: Invalid request
+        401:
+          description: Not authenticated
+        403:
+          description: Access denied
+        404: 
+          description: Not found
     delete:
       tags: 
         - Lists
@@ -266,6 +315,10 @@ paths:
       responses:
         204: 
           description: List Deleted
+        401:
+          description: Not authenticated
+        403:
+          description: Access denied
   /lists/questions/{listId}:
     get:
       tags: 
@@ -280,6 +333,12 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/Question'
+        401:
+          description: Not authenticated
+        404: 
+          description: Not found
+        403:
+          description: Access denied
     put:
       tags: 
         - Lists
@@ -314,6 +373,12 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/Question'
+        400:
+          description: Invalid request
+        401:
+          description: Not authenticated
+        403:
+          description: Access denied
   /lists:
     get:
       tags:
@@ -333,6 +398,12 @@ paths:
                       type: string
                     name:
                       type: string
+        400:
+          description: Invalid request
+        401:
+          description: Not authenticated
+        404: 
+          description: Not found
                           
         
     
