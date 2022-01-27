@@ -19,11 +19,14 @@ components:
           type: array
           items:
             type: number
+        nextMovieId:
+          type: string
       example:
         movieId: ADEF334978
         title: 'The Avengers'
         correctAnswer: 2012
         answers: [2012, 2014, 2009, 2013]
+        nextMovieId: JFDLKJ379
     Stats:
       type: object
       properties:
@@ -363,7 +366,7 @@ paths:
                 correctAnswer:
                   type: number
             example:
-              questionsAnswerdInList: 1
+              nextMovieId: JFDLKJ379
               answer: 'List Name'
               correctAnswer: false
       responses:

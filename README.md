@@ -124,7 +124,8 @@ Movie
         "movieId": "ADEF334978",
         "movie": "movie title",
         "correctAnswer": 2012,
-        "answers": [2012, 2014, 2009, 2013]
+        "answers": [2012, 2014, 2009, 2013],
+        "nextMovieId": "ADE4747YE" // Optional
     }
 ```
 ### Answer Question
@@ -137,7 +138,7 @@ Movie
 ### Answer List Question
 ```json
     {
-        "questionsAnswerdInList": 1,
+        "nextMovieId": "ADE4747YE",
         "answer": 2012,
         "correctAnswer": 2013
     }
