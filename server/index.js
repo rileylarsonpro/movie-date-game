@@ -1,4 +1,4 @@
-const express = require('express')
+/*const express = require('express')
 const app = express()
 const port = 1334
 
@@ -24,4 +24,22 @@ app.post('/', (req, res) => {
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
-})
+}) */
+
+/*
+TODO: New index.js
+const app require('./server')
+ app.listen(port, () => {
+    console.log(`server is running on port ${port}`)
+  })
+*/ 
+const {server} = require('./server')
+const port = 1334
+
+async function run () {
+  const app = await server()
+  app.listen(port, () => {
+    console.log(`server is running on port ${port}`)
+  })
+}
+run().catch(console.error)

@@ -74,7 +74,9 @@ components:
         type: string
 paths:
   /users:
+    x-controller: accounts
     post:
+      x-operation: createAccount
       tags:
         - Account
       summary: Create user
@@ -105,7 +107,9 @@ paths:
           description: Invalid request
     
   /users/{userId}:
+    x-controller: accounts
     delete:
+      x-operation: deleteAccount
       tags:
         - Account
       parameters:
@@ -119,7 +123,9 @@ paths:
 
 
   /users/login/{userId}:
+    x-controller: accounts
     put:
+      x-operation: login
       tags:
         - Account
       parameters:
@@ -132,7 +138,9 @@ paths:
           description: Invalid request
           
   /users/logout/{userId}:
+    x-controller: accounts
     put:
+      x-operation: logout
       tags:
         - Account
       parameters:
@@ -145,7 +153,9 @@ paths:
           description: Access denied
   
   /questions:
+    x-controller: generalGame
     get:
+      x-operation: getQuestion
       tags:
         - General Game
       summary: Get question
@@ -164,7 +174,9 @@ paths:
           description: Not found
 
   /questions/{userId}/movies/{movieId}:
+    x-controller: generalGame
     put:
+      x-operation: answerQuestion
       tags:
         - General Game
       parameters:
@@ -201,7 +213,9 @@ paths:
         404: 
           description: Not found
   /stats/{userId}:
+    x-controller: generalGame
     get:
+      x-operation: getPersonalStats
       tags: 
         - Game Statistics
       parameters:
@@ -221,11 +235,11 @@ paths:
         404: 
           description: Not found
   /stats:
+    x-controller: generalGame
     get:
+      x-operation: getLeaderboard
       tags: 
         - Game Statistics
-      parameters:
-        - $ref: '#/components/parameters/userId'
       summary: Get leaderboard stats
       responses:
         200: 
@@ -242,7 +256,9 @@ paths:
           description: Not found
           
   /lists/{userId}:
+    x-controller: lists
     post:
+      x-operation: uploadList
       tags: 
         - Lists
       parameters:
@@ -265,8 +281,8 @@ paths:
                 csv: 
                   $ref: '#/components/schemas/File'
             example:
-              answer: 'List Name'
-              correctAnswer: true
+              name: 'List Name'
+              public: true
       responses:
         201: 
           description: List Created
@@ -278,7 +294,9 @@ paths:
           description: Access denied
           
   /lists/{listId}:
+    x-controller: lists
     put:
+      x-operation: updateList
       tags: 
         - Lists
       parameters:
@@ -310,6 +328,7 @@ paths:
         404: 
           description: Not found
     delete:
+      x-operation: deleteList
       tags: 
         - Lists
       parameters:
@@ -323,7 +342,9 @@ paths:
         403:
           description: Access denied
   /lists/questions/{listId}:
+    x-controller: lists
     get:
+      x-operation: startMovieList
       tags: 
         - Lists
       parameters:
@@ -343,6 +364,7 @@ paths:
         403:
           description: Access denied
     put:
+      x-operation: answerListQuestion
       tags: 
         - Lists
       parameters:
@@ -355,20 +377,20 @@ paths:
             schema:
               type: object
               required:
-                - questionsAnswerdInList
+                - nextMovieId
                 - answer
                 - correctAnswer
               properties:
-                questionsAnswerdInList:
-                  type: number
+                nextMovieId:
+                  type: string
                 answer:
                   type: number
                 correctAnswer:
                   type: number
             example:
               nextMovieId: JFDLKJ379
-              answer: 'List Name'
-              correctAnswer: false
+              answer: 2014
+              correctAnswer: 2015
       responses:
         200:
           description: ok
@@ -383,7 +405,9 @@ paths:
         403:
           description: Access denied
   /lists:
+    x-controller: lists
     get:
+      x-operation: getPublicLists
       tags:
         - Lists
       summary: get public movie lists
