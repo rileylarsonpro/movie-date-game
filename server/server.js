@@ -29,12 +29,12 @@ server.use((req, res, next) => {
 })
 
 // Use openAPIEnforcer on all /server requests
-server.use('/server/*', enforcerMiddleware.init({baseUrl: '/server'}))
+server.use('/api/*', enforcerMiddleware.init({baseUrl: '/api'}))
 
 // Put custom routes here
 
 // Use mock middleware 
-server.use('/server/*', enforcerMiddleware.mock())
+server.use('/api/*', enforcerMiddleware.mock())
 
 
 enforcerMiddleware.on('error', err => {

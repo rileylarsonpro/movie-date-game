@@ -7,6 +7,11 @@ components:
   schemas:
     Question:
       type: object
+      required:
+        - movieId
+        - title
+        - correctAnswer
+        - answers
       properties:
         movieId:
           type: string
@@ -29,6 +34,12 @@ components:
         nextMovieId: JFDLKJ379
     Stats:
       type: object
+      required: 
+        - userName
+        - totalQuestionsAnswerd
+        - correctAnswers
+        - incorrectAnswers
+        - longestStreak
       properties:
         userName:
           type: string
@@ -52,7 +63,20 @@ components:
         $ref: '#/components/schemas/Stats'
     File:
       type: string
-      format: base64
+      format: byte
+    UsernamePass: 
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      example:
+        username: "someUser"
+        password: 'somePass'
   parameters:
     userId:
       name: userId
@@ -85,24 +109,30 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - username
-                - password
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
-                  format: password
+             $ref: '#/components/schemas/UsernamePass'
             # not required      
             example:
               username: movieGuy
               password: supersecret
-              confirmPassword: supersecret
       responses:
         201: 
           description: User created
+          content: 
+            application/json:
+              schema:
+                type: object
+                required: 
+                  - username
+                  - userId
+                properties: 
+                  username:
+                    type: string
+                  userId:
+                    type: string
+          headers: 
+            Location:
+              schema:
+                type: string
         400:
           description: Invalid request
     
@@ -122,15 +152,19 @@ paths:
           description: Not authenticated
 
 
-  /users/login/{userId}:
+  /users/login:
     x-controller: accounts
     put:
       x-operation: login
       tags:
         - Account
-      parameters:
-        - $ref: '#/components/parameters/userId'
       summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+             $ref: '#/components/schemas/UsernamePass'
       responses:
         200:
           description: Authenticated
@@ -255,7 +289,7 @@ paths:
         404: 
           description: Not found
           
-  /lists/{userId}:
+  /lists/users/{userId}:
     x-controller: lists
     post:
       x-operation: uploadList
@@ -286,6 +320,25 @@ paths:
       responses:
         201: 
           description: List Created
+          content: 
+            application/json:
+              schema:
+                type: object
+                required: 
+                  - name
+                  - listId
+                  - public
+                properties: 
+                  name:
+                    type: string
+                  listId:
+                    type: string
+                  public:
+                    type: boolean
+          headers: 
+            Location:
+              schema:
+                type: string
         400:
           description: Invalid request
         401:
@@ -314,8 +367,8 @@ paths:
                 public:
                   type: boolean
             example:
-              answer: 'List Name'
-              correctAnswer: false
+              name: 'List Name'
+              public: false
       responses:
         200: 
           description: List Updated
