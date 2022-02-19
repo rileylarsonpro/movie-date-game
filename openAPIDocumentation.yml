@@ -121,13 +121,10 @@ paths:
             application/json:
               schema:
                 type: object
-                required: 
-                  - username
-                  - userId
                 properties: 
                   username:
                     type: string
-                  userId:
+                  _id:
                     type: string
           headers: 
             Location:
@@ -150,6 +147,43 @@ paths:
           description: User deleted
         401:
           description: Not authenticated
+    put:
+      x-operation: updateAccount
+      tags:
+        - Account
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      summary: Update user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: User updated
+          content: 
+            application/json:
+              schema:
+                type: object
+                required: 
+                  - username
+                  - userId
+                properties: 
+                  username:
+                    type: string
+                  userId:
+                    type: string
+        401:
+          description: Not authenticated
+        403:
+          description: Access Denied
 
 
   /users/login:

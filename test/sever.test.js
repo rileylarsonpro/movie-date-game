@@ -44,6 +44,24 @@ describe('server', () => {
 				.expect(204)
 		})
 
+
+		it('can update account username', () => {
+			return request(app)
+				.put('/api/users/account-id')
+				.send({
+					username: 'someuser'
+				})
+				.expect(200)
+		})
+		it('can update account password', () => {
+			return request(app)
+				.put('/api/users/account-id')
+				.send({
+					password: 'newPass'
+				})
+				.expect(200)
+		})
+
 		it('can login', () => {
 			return request(app)
 				.put('/api/users/login')

@@ -4,6 +4,9 @@ const EnforcerMiddleware = require('openapi-enforcer-middleware')
 const express = require('express')
 const path = require('path')
 
+// Connect to mongodb
+require('./mongo.js');
+
 const next = require('next')
 const bodyParser = require('body-parser')
 
@@ -13,18 +16,23 @@ const handle = app.getRequestHandler()
 
 module.exports.app = app
 
+
 // Define Server
 const server = express()
 const openapiPath = path.resolve(__dirname, '../openAPIDocumentation.yml')
 const enforcerPromice = Enforcer(openapiPath)
 const enforcerMiddleware = EnforcerMiddleware(enforcerPromice) 
 
+// Define controllers
+const Users = require('./controllers/users')
+const GeneralGame = require('./controllers/generalGame')
+const Lists = require('./controllers/lists')
 
 server.use(bodyParser.json())
 
 // Logging Requests
 server.use((req, res, next) => {
-    console.log(req.method, req.path)
+    //console.log(req.method, req.path)
     next()
 })
 
@@ -32,6 +40,11 @@ server.use((req, res, next) => {
 server.use('/api/*', enforcerMiddleware.init({baseUrl: '/api'}))
 
 // Put custom routes here
+server.use("/api/*", enforcerMiddleware.route({
+	accounts: Users(),
+    generalGame: GeneralGame(),
+    lists: Lists()
+}));
 
 // Use mock middleware 
 server.use('/api/*', enforcerMiddleware.mock())
