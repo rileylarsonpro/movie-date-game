@@ -3,6 +3,7 @@ import { HYDRATE, createWrapper } from 'next-redux-wrapper'
 import thunkMiddleware from 'redux-thunk'
 import count from './count/reducer'
 import tick from './tick/reducer'
+import auth from './auth/reducer'
 
 const bindMiddleware = (middleware) => {
   if (process.env.NODE_ENV !== 'production') {
@@ -15,6 +16,7 @@ const bindMiddleware = (middleware) => {
 const combinedReducer = combineReducers({
   count,
   tick,
+  auth,
 })
 
 const reducer = (state, action) => {
