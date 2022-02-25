@@ -4,6 +4,11 @@ info:
   version: v1
 # Can be reused all over
 components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: appSessionId 
   schemas:
     Question:
       type: object
@@ -132,6 +137,28 @@ paths:
                 type: string
         400:
           description: Invalid request
+    get:
+      x-operation: getUser
+      tags:
+        - Account
+      summary: Get user if authenticated
+      responses:
+        200:
+          description: Authenticated
+          content: 
+            application/json:
+              schema:
+                type: object
+                required: 
+                  - username
+                  - _id
+                properties: 
+                  username:
+                    type: string
+                  _id:
+                    type: string
+        401:
+          description: Unauthorized
     
   /users/{userId}:
     x-controller: accounts
@@ -139,6 +166,8 @@ paths:
       x-operation: deleteAccount
       tags:
         - Account
+      security:
+        - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/userId'
       summary: Delete user
@@ -151,6 +180,8 @@ paths:
       x-operation: updateAccount
       tags:
         - Account
+      security:
+        - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/userId'
       summary: Update user
@@ -205,14 +236,14 @@ paths:
         400:
           description: Invalid request
           
-  /users/logout/{userId}:
+  /users/logout:
     x-controller: accounts
     put:
       x-operation: logout
       tags:
         - Account
-      parameters:
-        - $ref: '#/components/parameters/userId'
+      security:
+        - cookieAuth: []
       summary: Logout user
       responses:
         200:
@@ -226,6 +257,8 @@ paths:
       x-operation: getQuestion
       tags:
         - General Game
+      security:
+        - cookieAuth: []
       summary: Get question
       responses:
         200:
@@ -247,6 +280,8 @@ paths:
       x-operation: answerQuestion
       tags:
         - General Game
+      security:
+        - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/userId'
         - $ref: '#/components/parameters/movieId'
@@ -286,6 +321,8 @@ paths:
       x-operation: getPersonalStats
       tags: 
         - Game Statistics
+      security:
+        - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/userId'
       summary: Get personal stats
@@ -308,6 +345,8 @@ paths:
       x-operation: getLeaderboard
       tags: 
         - Game Statistics
+      security:
+        - cookieAuth: []
       summary: Get leaderboard stats
       responses:
         200: 
@@ -329,6 +368,8 @@ paths:
       x-operation: uploadList
       tags: 
         - Lists
+      security:
+        - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/userId'
       summary: Upload movie list csv file 
@@ -386,6 +427,8 @@ paths:
       x-operation: updateList
       tags: 
         - Lists
+      security:
+        - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/listId'
       summary: Update movie list
@@ -418,6 +461,8 @@ paths:
       x-operation: deleteList
       tags: 
         - Lists
+      security:
+        - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/listId'
       summary: Delete movie list
@@ -434,6 +479,8 @@ paths:
       x-operation: startMovieList
       tags: 
         - Lists
+      security:
+        - cookieAuth: []
       parameters:
          - $ref: '#/components/parameters/listId'
       summary: Start movie list game
@@ -454,6 +501,8 @@ paths:
       x-operation: answerListQuestion
       tags: 
         - Lists
+      security:
+        - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/listId'
       summary: Answer movie list question
@@ -497,6 +546,8 @@ paths:
       x-operation: getPublicLists
       tags:
         - Lists
+      security:
+        - cookieAuth: []
       summary: get public movie lists
       responses:
         200:

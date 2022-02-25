@@ -16,12 +16,17 @@ const handle = app.getRequestHandler()
 
 module.exports.app = app
 
+// Passport setup
+const session = require('express-session')
+const passport = require('passport')
+const store = require(`./passport`)(session)
+const cookieParser = require('cookie-parser')
 
 // Define Server
 const server = express()
 const openapiPath = path.resolve(__dirname, '../openAPIDocumentation.yml')
 const enforcerPromice = Enforcer(openapiPath)
-const enforcerMiddleware = EnforcerMiddleware(enforcerPromice) 
+const enforcerMiddleware = EnforcerMiddleware(enforcerPromice)
 
 // Define controllers
 const Users = require('./controllers/users')
@@ -36,29 +41,56 @@ server.use((req, res, next) => {
     next()
 })
 
+// Cookie setup
+server.use(express.urlencoded({ extended: true }))
+server.use(cookieParser())
+const sess = {
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 30, // A month long cookie
+    }
+}
+
+if (server.get('env') === 'production') {
+    server.set('trust proxy', 1) // trust first proxy
+    sess.cookie.secure = true // serve secure cookies
+    sess.cookie.sameSite = 'none'
+}
+
+server.use(session(sess))
+server.use(passport.initialize())
+server.use(passport.session())
+
+
 // Use openAPIEnforcer on all /server requests
-server.use('/api/*', enforcerMiddleware.init({baseUrl: '/api'}))
+server.use('/api/*', enforcerMiddleware.init({ baseUrl: '/api' }))
 
 // Put custom routes here
+
+server.use("/api/*", require('./middleware/authenticated'))
+
 server.use("/api/*", enforcerMiddleware.route({
-	accounts: Users(),
+    accounts: Users(),
     generalGame: GeneralGame(),
     lists: Lists()
 }));
 
 // Use mock middleware 
-server.use('/api/*', enforcerMiddleware.mock())
+//server.use('/api/*', enforcerMiddleware.mock())
 
 
 enforcerMiddleware.on('error', err => {
     console.error(err)
     process.exit(1)
-}) 
+})
 
 // All other request are handled by NEXT
 server.get('*', (req, res) => {
     return handle(req, res)
-}) 
+})
 
 module.exports.server = server
 
