@@ -79,7 +79,7 @@ server.use("/api/*", enforcerMiddleware.route({
 }));
 
 // Use mock middleware 
-//server.use('/api/*', enforcerMiddleware.mock())
+server.use('/api/*', enforcerMiddleware.mock())
 
 
 enforcerMiddleware.on('error', err => {

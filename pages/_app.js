@@ -1,13 +1,17 @@
 import { wrapper } from '../store/store'
 import '../scss/custom.scss';
-import { useEffect } from "react"
+import { AuthGuard } from "../components/AuthGuard"
 
 const WrappedApp = ({ Component, pageProps }) => {{
-  useEffect(() => {
-    import("bootstrap/dist/js/bootstrap");
-  }, []);
-
-  return <Component {...pageProps} />
+  return <>
+  {Component.requireAuth ? (
+    <AuthGuard>
+      <Component {...pageProps} />
+    </AuthGuard>
+  ) : (
+    // public page
+    <Component {...pageProps} />
+  )}</>
 }}
 
 export default wrapper.withRedux(WrappedApp)

@@ -1,15 +1,26 @@
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import RegisterForm from '../components/RegisterForm'
-import { loginUser } from '../store/auth/action'
+import AuthForm from '../components/AuthForm'
+import { registerUser } from '../store/auth/action'
+import { useDispatch } from 'react-redux'
+import Router from 'next/router';
+
+
 
 const Register = (props) => {
-  return <RegisterForm title="Register" linkTo="/login" />
+  const dispatch = useDispatch()
+
+  const handleSubmit = async (event) => {
+      event.preventDefault();
+      const form = Object.fromEntries(new FormData(event.target).entries());
+      await dispatch(registerUser(form))
+      Router.push('/')
+  };
+
+  return <AuthForm title="Register" linkTo="/login" linkToName="Login Here" handleSubmit={handleSubmit} />
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginUser: bindActionCreators(loginUser, dispatch),    
   }
 }
 
