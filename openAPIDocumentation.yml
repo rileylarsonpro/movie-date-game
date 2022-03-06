@@ -379,9 +379,6 @@ paths:
           multipart/form-data:
             schema:
               type: object
-              required:
-                - name
-                - public
               properties:
                 name:
                   type: string

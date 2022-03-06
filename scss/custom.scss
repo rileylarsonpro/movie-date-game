@@ -7,5 +7,27 @@
 $theme-colors: (
   "primary": rgb(165, 49, 165)
 );
+$primary: rgb(165, 49, 165);
 
 @import "bootstrap";
+
+
+.form-size {
+  max-width: 30rem;
+}
+
+.primary-color {
+  color: $primary;
+}
+
+.big-button {
+  font-size: 3rem;
+  min-width: 10rem;
+}
+
+.question-title-wrapper {
+  display: flex;
+  height: 8rem;
+  align-items: center;
+  justify-content: center;
+}

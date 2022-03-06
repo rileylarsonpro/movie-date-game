@@ -6,9 +6,8 @@ import { Card, Form, Container, Button } from 'react-bootstrap'
 
 const AuthForm = ({ title, linkTo, linkToName, handleSubmit }) => {
     const loggedIn = useSelector(state => state.auth.loggedIn)
-
     return (
-        <Container className="pt-5 container-flex justify-content-center">
+        <Container className="form-size pt-5 container-flex justify-content-center">
             <Card className="p-3 card-sm">
                 <div className="w-100 container-flex text-center"><h1>{title}</h1></div>
                 <Form onSubmit={handleSubmit}>
@@ -28,7 +27,7 @@ const AuthForm = ({ title, linkTo, linkToName, handleSubmit }) => {
                         <a>{linkToName}</a>
                     </Link>
                 </nav>
-                <div> LoggedIn: {loggedIn ? 'true' : 'false'} </div>
+                {/* <div> LoggedIn: {loggedIn ? 'true' : 'false'} </div> */}
             </Card>
         </Container>
     )

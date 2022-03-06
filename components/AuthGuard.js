@@ -10,7 +10,7 @@ export function AuthGuard({ children }) {
   const dispatch = useDispatch()
 
   useEffect(async () => {
-    if (initializing){
+    if (initializing) {
        await dispatch(getUser())
     }
     else if (!user) {
@@ -18,7 +18,7 @@ export function AuthGuard({ children }) {
     }
   }, [user, initializing])
 
-  if(initializing){
+  if (initializing) {
       return <div></div>
   }
   // if auth initialized with a valid user show protected page

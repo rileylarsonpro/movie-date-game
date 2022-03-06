@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
     Position: Number,
+    Const: String,
     Created: String,
     Modified: String,
     Description: String,
@@ -17,7 +18,7 @@ const movieSchema = new mongoose.Schema({
     'Directors': String,
     'Your Rating': Number,
     'Date Rated': String
-}, {collection: 'Users'});
+}, {collection: 'Movies'});
 
 
 module.exports = mongoose.model('Movie', movieSchema)

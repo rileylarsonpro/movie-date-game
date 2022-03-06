@@ -1,6 +1,7 @@
 // Define App
 const Enforcer = require('openapi-enforcer')
 const EnforcerMiddleware = require('openapi-enforcer-middleware')
+const multer = require('multer')
 const express = require('express')
 const path = require('path')
 
@@ -36,10 +37,10 @@ const Lists = require('./controllers/lists')
 server.use(bodyParser.json())
 
 // Logging Requests
-server.use((req, res, next) => {
-    //console.log(req.method, req.path)
-    next()
-})
+// server.use((req, res, next) => {
+//     console.log(req.method, req.path)
+//     next()
+// })
 
 // Cookie setup
 server.use(express.urlencoded({ extended: true }))
@@ -50,7 +51,7 @@ const sess = {
     saveUninitialized: true,
     store,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 30, // A month long cookie
+        maxAge: 1000 * 60 * 60 * 24, // A day long cookie
     }
 }
 
@@ -68,9 +69,28 @@ server.use(passport.session())
 // Use openAPIEnforcer on all /server requests
 server.use('/api/*', enforcerMiddleware.init({ baseUrl: '/api' }))
 
+
 // Put custom routes here
 
 server.use("/api/*", require('./middleware/authenticated'))
+
+//! Use of Multer
+const storage = multer.diskStorage({
+    destination: (req, file, callBack) => {
+        callBack(null, __dirname + '/uploads/')    
+    },
+    filename: (req, file, callBack) => {
+        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+})
+ 
+// initialize the multer
+const upload = multer({
+    storage: storage,
+})
+
+// for uploading csv 
+server.use("/api/lists/users/*", upload.single('csv'))
 
 server.use("/api/*", enforcerMiddleware.route({
     accounts: Users(),

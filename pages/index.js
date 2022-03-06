@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
-import Page from '../components/Page'
+import GeneralGame from '../components/GeneralGame'
 
 
 const Index = (props) => {
-  return  <Page title="Index Page" linkTo="/login" />
+  return  <GeneralGame />
 }
 
+// Add property to page to make it protected
 Index.requireAuth = true
 
 const mapDispatchToProps = (dispatch) => {

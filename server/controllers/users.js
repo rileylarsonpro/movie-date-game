@@ -19,7 +19,7 @@ module.exports = function () {
             .send(result)
         })
       } else {
-        res.enforcer.status(500).send()
+        res.status(500).send()
       }
     },
 
@@ -29,7 +29,7 @@ module.exports = function () {
       if (user === null) res.status(404).send(`User with ID ${userId} does not exist.`)
       else {
         await User.deleteOne({ _id: userId })
-        res.enforcer.status(204).send()
+        res.status(204).send()
       }
     },
 

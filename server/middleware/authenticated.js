@@ -3,6 +3,7 @@
  * This file is middleware that runs before all api calls
  * It checks if the openAPIDocumenation.yml requires a cookie
  * If the request modifies a user the userId in cookie is also verified
+ * 
  */
 module.exports = (req, res, next) => {
     const { operation } = req.enforcer

@@ -5,10 +5,10 @@ const userSchema = new mongoose.Schema({
    password: String,
    stats: {
        type: Object,
-       totalQuestionsAnswerd: Number,
-       correctAnswers: Number,
-       incorrectAnswers: Number,
-       longestStreak: Number
+       totalQuestionsAnswerd: { type: Number, default: 0 },
+       correctAnswers: { type: Number, default: 0 },
+       incorrectAnswers: { type: Number, default: 0 },
+       longestStreak: { type: Number, default: 0 }
    }
 }, {collection: 'Users'});
 
