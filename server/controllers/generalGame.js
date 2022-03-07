@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const Movie = require('../models/movie.model');
 
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
@@ -56,8 +57,22 @@ module.exports = function () {
     },
 
     async answerQuestion(req, res) {
-
-
+      const {answer, correctAnswer} = req.body
+      let user = await User.findById(req.user._id).exec();
+      user.stats.totalQuestionsAnswerd += 1
+      if(answer === correctAnswer){
+        user.stats.correctAnswers = user.stats.correctAnswers + 1
+        user.stats.currentStreak = user.stats.currentStreak + 1
+        if (user.stats.currentStreak >  user.stats.longestStreak){
+          user.stats.longestStreak = user.stats.currentStreak
+        }
+      }
+      else {
+        user.stats.incorrectAnswers = user.stats.incorrectAnswers + 1
+        user.stats.currentStreak = 0
+      }
+      let newUser = await User.findOneAndUpdate({_id: req.user._id}, {stats: user.stats})
+      res.send(newUser)
     },
 
     async getPersonalStats(req, res) {

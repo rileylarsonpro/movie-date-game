@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
        totalQuestionsAnswerd: { type: Number, default: 0 },
        correctAnswers: { type: Number, default: 0 },
        incorrectAnswers: { type: Number, default: 0 },
+       currentStreak: { type: Number, default: 0 },
        longestStreak: { type: Number, default: 0 }
    }
 }, {collection: 'Users'});

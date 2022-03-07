@@ -8,7 +8,7 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING,{
 });
 
 // Error handling
-var db = mongoose.connection;
+let db = mongoose.connection;
 db.on('error', error => console.error(error.message));
 // Callback function
 db.once('open', function() {

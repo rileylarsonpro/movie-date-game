@@ -20,7 +20,7 @@ export default function CallApi({ }) {
         <div>
             <Navbar bg="light" variant="light">
                 <Container>
-                    <Navbar.Brand href="/">Yo</Navbar.Brand>
+                    <Navbar.Brand href="/">Movie Trivia Game</Navbar.Brand>
                     <Navbar.Collapse className="justify-content-end">
                         <NavDropdown title={username} id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={logOut}>Logout</NavDropdown.Item>

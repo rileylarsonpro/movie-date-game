@@ -274,7 +274,7 @@ paths:
         404: 
           description: Not found
 
-  /questions/{userId}/movies/{movieId}:
+  /questions/movies/{movieId}:
     x-controller: generalGame
     put:
       x-operation: answerQuestion
@@ -283,7 +283,6 @@ paths:
       security:
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/userId'
         - $ref: '#/components/parameters/movieId'
       summary: Answer question
       requestBody:
@@ -379,6 +378,9 @@ paths:
           multipart/form-data:
             schema:
               type: object
+              required:
+                - name
+                - public
               properties:
                 name:
                   type: string
