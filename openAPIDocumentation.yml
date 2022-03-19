@@ -383,9 +383,6 @@ paths:
           multipart/form-data:
             schema:
               type: object
-              required:
-                - name
-                - public
               properties:
                 name:
                   type: string
@@ -424,7 +421,37 @@ paths:
           description: Not authenticated
         403:
           description: Access denied
-          
+  /lists/users:
+    x-controller: lists
+    get:
+      x-operation: getUserLists
+      tags: 
+        - Lists
+      security:
+        - cookieAuth: []
+      summary: Get Lists belonging to current user
+      responses:
+        200: 
+          description: ok
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    public:
+                      type: boolean
+        400:
+          description: Invalid request
+        401:
+          description: Not authenticated
+        403:
+          description: Access denied
   /lists/{listId}:
     x-controller: lists
     put:
@@ -563,9 +590,11 @@ paths:
                 items:
                   type: object
                   properties:
-                    listId:
+                    _id:
                       type: string
                     name:
+                      type: string
+                    owner:
                       type: string
         400:
           description: Invalid request

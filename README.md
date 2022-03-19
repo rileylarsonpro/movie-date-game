@@ -223,3 +223,4 @@ csv file
 
 ### Tasks Todo
 - Add unique username enforcement on front and back end
+- Make sure only .csv can be uploaded and check .csv formatting

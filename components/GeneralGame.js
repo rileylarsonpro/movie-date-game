@@ -4,7 +4,7 @@ import { trigger } from "../store/customEvents";
 import { Card, Container, Button, Row, Col } from 'react-bootstrap'
 
 
-const Page = () => {
+const GeneralGame = () => {
     const [question, setQuestion] = useState([])
     const [answers, setAnswers] = useState([])
     const [correct, setCorrect] = useState([])
@@ -82,4 +82,4 @@ const Page = () => {
     )
 }
 
-export default connect((state) => state)(Page)
+export default connect((state) => state)(GeneralGame)

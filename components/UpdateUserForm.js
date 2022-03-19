@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 
 
 
-const Page = () => {
+const UpdateUserForm = () => {
     const user = useSelector(state => state.auth.user)
     const [username, setUsername] = useState(user.username)
     const [newPassword, setNewPassword] = useState("")
@@ -65,4 +65,4 @@ const Page = () => {
     )
 }
 
-export default connect((state) => state)(Page)
+export default connect((state) => state)(UpdateUserForm)

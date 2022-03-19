@@ -5,8 +5,7 @@ import { Card, Container, Button, Row, Col } from 'react-bootstrap'
 
 
 
-const Page = () => {
-    const userId = useSelector(state => state.auth.user._id)
+const IndividualStats = ({user}) => {
     const [totalQuestionsAnswered, setTotalQuestions] = useState(0)
     const [correctAnswers, setCorrect] = useState(0)
     const [incorrectAnswers, setIncorrect] = useState(0)
@@ -20,7 +19,7 @@ const Page = () => {
     }, [])
 
     async function getStats() {
-        const res = await fetch(`api/stats/${userId}`)
+        const res = await fetch(`api/stats/${user._id}`)
         let { totalQuestionsAnswered, correctAnswers, currentStreak, incorrectAnswers, longestStreak } = await res.json()
         setTotalQuestions(totalQuestionsAnswered)
         setCorrect(correctAnswers)
@@ -49,5 +48,8 @@ const Page = () => {
         </div>
     )
 }
+const mapStateToProps = state => ({
+    user: state.auth.user
+}); 
 
-export default connect((state) => state)(Page)
+export default connect(mapStateToProps)(IndividualStats)

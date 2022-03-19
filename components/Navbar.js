@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { Container, Navbar, NavDropdown, Nav } from 'react-bootstrap'
 
 
-export default function CallApi({ }) {
+export default function Nabar({ }) {
     const [text, setText] = useState([])
     const [question, setQuestion] = useState([])
     const username = useSelector(state => state.auth.user.username)
@@ -22,6 +22,7 @@ export default function CallApi({ }) {
                 <Container>
                     <Navbar.Brand href="/">Movie Trivia Game</Navbar.Brand>
                     <Nav.Link href="/leaderboard">Leaderboard</Nav.Link>
+                    <Nav.Link href="/lists">Lists</Nav.Link>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
                         <NavDropdown title={username} id="basic-nav-dropdown">

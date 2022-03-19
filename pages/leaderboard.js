@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { useState, useEffect } from 'react'
 import Nabar from '../components/Navbar'
-import { Table, Container, Card, Row, Col } from 'react-bootstrap'
+import { Table, Container, Card } from 'react-bootstrap'
 
 
 const Index = (props) => {

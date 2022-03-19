@@ -2,6 +2,7 @@
   "private": true,
   "proxy": "http://localhost:1334",
   "scripts": {
+    "front": "node server/index.js",
     "dev": "nodemon server/index.js",
     "build": "next build",
     "start": "next start",
