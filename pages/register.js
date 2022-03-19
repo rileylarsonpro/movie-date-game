@@ -16,7 +16,7 @@ const Register = (props) => {
       Router.push('/')
   };
 
-  return <AuthForm title="Register" linkTo="/login" linkToName="Login Here" handleSubmit={handleSubmit} />
+  return <AuthForm title="Register" linkTo="/login" linkToName="Login Here" handleSubmit={handleSubmit}>Register</AuthForm>
 }
 
 const mapDispatchToProps = (dispatch) => {

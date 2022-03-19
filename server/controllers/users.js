@@ -11,7 +11,7 @@ module.exports = function () {
         username: username,
         password: await bcrypt.hash(password, salt),
         stats: {
-          totalQuestionsAnswerd: 0,
+          totalQuestionsAnswered: 0,
           correctAnswers: 0,
           incorrectAnswers: 0,
           currentStreak: 0,
@@ -62,7 +62,13 @@ module.exports = function () {
     },
 
     async getUser(req, res) {
-      if (req.user) res.status(200).send(req.user)
+      if (req.user) {
+        let user = await User.findById(req.user._id).exec();
+        if(user){
+          res.status(200).send(user)
+        }
+        else res.sendStatus(400)
+      }
       else res.sendStatus(401)
     },
 

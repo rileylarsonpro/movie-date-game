@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { useState, useEffect } from 'react'
+import { trigger } from "../store/customEvents";
 import { Card, Container, Button, Row, Col } from 'react-bootstrap'
-import Nabar from './Navbar'
 
 
 const Page = () => {
@@ -57,11 +57,11 @@ const Page = () => {
             })
         })
         let data = await res.json()
-        //console.log(data)
+        // Triggers change event in stats component
+        trigger("statsChanged")
     }
     return (
         <div>
-            <Nabar />
             <Container className="form-size pt-5 container-flex justify-content-center">
                 <Card className="p-3 card-sm">
                     <div className="w-100 container-flex text-center"><h2>Movie Release Dates</h2>

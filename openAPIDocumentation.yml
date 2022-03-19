@@ -40,15 +40,13 @@ components:
     Stats:
       type: object
       required: 
-        - userName
-        - totalQuestionsAnswerd
+        - totalQuestionsAnswered
         - correctAnswers
         - incorrectAnswers
         - longestStreak
+        - currentStreak
       properties:
-        userName:
-          type: string
-        totalQuestionsAnswerd:
+        totalQuestionsAnswered:
           type: number
         correctAnswers:
           type: number
@@ -56,16 +54,23 @@ components:
           type: number
         longestStreak:
           type: number
+        currentStreak:
+          type: number
       example:
-        userName: 'someName'
-        totalQuestionsAnswerd: 800
+        totalQuestionsAnswered: 800
         correctAnswers: 500
         incorrectAnswers: 300
         longestStreak: 50
+        currentStreak: 4
     Leaderboard:
       type: array
       items:
-        $ref: '#/components/schemas/Stats'
+        type: object
+        properties:
+          username:
+            type: string
+          stats:
+            $ref: '#/components/schemas/Stats'
     File:
       type: string
       format: byte

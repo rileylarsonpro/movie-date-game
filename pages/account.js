@@ -1,16 +1,16 @@
 import { connect } from 'react-redux'
-import GeneralGame from '../components/GeneralGame'
 import IndividualStats from '../components/IndividualStats'
 import Nabar from '../components/Navbar'
+import UpdateUser from '../components/UpdateUserForm'
 
 
 const Index = (props) => {
-  return (
-    <>
-      <Nabar />
-      <GeneralGame />
-      <IndividualStats />
-    </>
+    return (
+        <>
+            <Nabar />
+            <IndividualStats />
+            <UpdateUser />
+        </>
     )
 }
 
@@ -18,8 +18,8 @@ const Index = (props) => {
 Index.requireAuth = true
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-  }
+    return {
+    }
 }
 
 export default connect(null, mapDispatchToProps)(Index)

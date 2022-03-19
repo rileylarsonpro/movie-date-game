@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { logoutUser } from '../store/auth/action'
 import { useDispatch } from 'react-redux'
-import { Container, Navbar, NavDropdown } from 'react-bootstrap'
+import { Container, Navbar, NavDropdown, Nav } from 'react-bootstrap'
 
 
 export default function CallApi({ }) {
@@ -18,13 +18,15 @@ export default function CallApi({ }) {
 
     return (
         <div>
-            <Navbar bg="light" variant="light">
+            <Navbar collapseOnSelect expand="sm" bg="light" variant="light">
                 <Container>
                     <Navbar.Brand href="/">Movie Trivia Game</Navbar.Brand>
-                    <Navbar.Collapse className="justify-content-end">
+                    <Nav.Link href="/leaderboard">Leaderboard</Nav.Link>
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
                         <NavDropdown title={username} id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={logOut}>Logout</NavDropdown.Item>
-                            <NavDropdown.Item >Account Details</NavDropdown.Item>
+                            <NavDropdown.Item href="/account">Account Details</NavDropdown.Item>
                         </NavDropdown>
                     </Navbar.Collapse>
                 </Container>

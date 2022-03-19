@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux'
 import { Card, Form, Container, Button } from 'react-bootstrap'
 
 
-const AuthForm = ({ title, linkTo, linkToName, handleSubmit }) => {
+const AuthForm = ({ title, linkTo, linkToName, handleSubmit, children}) => {
     const loggedIn = useSelector(state => state.auth.loggedIn)
     return (
         <Container className="form-size pt-5 container-flex justify-content-center">
             <Card className="p-3 card-sm">
-                <div className="w-100 container-flex text-center"><h1>{title}</h1></div>
+                <div className="w-100 container-flex text-center"><h1>{children}</h1></div>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="username">
                         <Form.Label>Username</Form.Label>

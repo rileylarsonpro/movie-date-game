@@ -15,7 +15,7 @@ const Login = (props) => {
     // TODO: Feedback to user if login fails. 
     Router.push('/')
   };
-  return <AuthForm title="Login" linkTo="/register" linkToName="Create Account" handleSubmit={handleSubmit} />
+  return <AuthForm title="Login" linkTo="/register" linkToName="Create Account" handleSubmit={handleSubmit}>Login</AuthForm>
 }
 
 const mapDispatchToProps = (dispatch) => {

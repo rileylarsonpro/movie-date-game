@@ -65,9 +65,9 @@ User Statistics
 |         Property         |                                   Description                                       |
 | ------------------------ | ----------------------------------------------------------------------------------- |
 | userId                   | Unique identifier for user who owns stats                                           |
-| totalQuestionsAnswerd    | Count of all answerd questions from general game                                    |
-| totalCorrectQuestions    | Count of all correct answerd questions from general game                            |
-| totalIncorrectQuestions  | Count of all Incorrect answerd questions from general game                          |
+| totalQuestionsAnswered    | Count of all answered questions from general game                                    |
+| totalCorrectQuestions    | Count of all correct answered questions from general game                            |
+| totalIncorrectQuestions  | Count of all Incorrect answered questions from general game                          |
 | longestStreak            | Count of user's longest count of correct questions from general game in one sitting | 
 
 Movie List
@@ -147,7 +147,7 @@ Movie
 ### Get Personal Stats
 ```json
     {
-        "totalQuestionsAnswerd": 500,
+        "totalQuestionsAnswered": 500,
         "correctAnswers": 200,
         "incorrectAnswers": 300,
         "longestStreak": 50
@@ -159,21 +159,21 @@ Movie
     [
         {
             "userName": "someName",
-            "totalQuestionsAnswerd": 800,
+            "totalQuestionsAnswered": 800,
             "correctAnswers": 500,
             "incorrectAnswers": 300,
             "longestStreak": 50
         },
         {
             "userName": "someName2",
-            "totalQuestionsAnswerd": 600,
+            "totalQuestionsAnswered": 600,
             "correctAnswers": 300,
             "incorrectAnswers": 300,
             "longestStreak": 40
         },
         {
             "userName": "someName3",
-            "totalQuestionsAnswerd": 500,
+            "totalQuestionsAnswered": 500,
             "correctAnswers": 200,
             "incorrectAnswers": 300,
             "longestStreak": 30
@@ -220,3 +220,6 @@ csv file
         }
     ]
 ```
+
+### Tasks Todo
+- Add unique username enforcement on front and back end

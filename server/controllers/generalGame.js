@@ -59,7 +59,7 @@ module.exports = function () {
     async answerQuestion(req, res) {
       const {answer, correctAnswer} = req.body
       let user = await User.findById(req.user._id).exec();
-      user.stats.totalQuestionsAnswerd += 1
+      user.stats.totalQuestionsAnswered += 1
       if(answer === correctAnswer){
         user.stats.correctAnswers = user.stats.correctAnswers + 1
         user.stats.currentStreak = user.stats.currentStreak + 1
@@ -76,13 +76,18 @@ module.exports = function () {
     },
 
     async getPersonalStats(req, res) {
-
-
+      let { userId } = req.enforcer.params
+      let user = await User.findById(userId).exec();
+      if (!user || !user.stats){
+        res.enforcer.status(404).send()
+      }
+      else res.enforcer.send(user.stats)
     },
 
     async getLeaderboard(req, res) {
-
-
+      // get just stats and username of all users
+      let users = await User.find({}, {'_id': false, 'stats': true,  'username': true}).sort({'stats.correctAnswers' : -1}).exec();
+      res.send(users)
     },
 
   }

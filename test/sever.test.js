@@ -149,9 +149,9 @@ describe('server', () => {
 				.expect(200)
 				.then(res => {
 					expect(res.body).to.be.an('object')
-                    expect(res.body).to.have.all.keys('userName', "totalQuestionsAnswerd", "correctAnswers", "incorrectAnswers", "longestStreak")
+                    expect(res.body).to.have.all.keys('userName', "totalQuestionsAnswered", "correctAnswers", "incorrectAnswers", "longestStreak")
                     expect(res.body.userName).to.be.an('string')
-                    expect(res.body.totalQuestionsAnswerd).to.be.an('number')
+                    expect(res.body.totalQuestionsAnswered).to.be.an('number')
                     expect(res.body.correctAnswers).to.be.an('number')
                     expect(res.body.incorrectAnswers).to.be.an('number')
                     expect(res.body.longestStreak).to.be.an('number')
@@ -166,9 +166,9 @@ describe('server', () => {
             .then(res => {
                 expect(res.body).to.be.an('array')
                 res.body.forEach(stat => {
-                    expect(stat).to.have.all.keys('userName', "totalQuestionsAnswerd", "correctAnswers", "incorrectAnswers", "longestStreak")
+                    expect(stat).to.have.all.keys('userName', "totalQuestionsAnswered", "correctAnswers", "incorrectAnswers", "longestStreak")
                     expect(stat.userName).to.be.an('string')
-                    expect(stat.totalQuestionsAnswerd).to.be.an('number')
+                    expect(stat.totalQuestionsAnswered).to.be.an('number')
                     expect(stat.correctAnswers).to.be.an('number')
                     expect(stat.incorrectAnswers).to.be.an('number')
                     expect(stat.longestStreak).to.be.an('number')
