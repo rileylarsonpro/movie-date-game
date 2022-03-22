@@ -4,13 +4,14 @@ import { trigger } from "../store/customEvents";
 import { Card, Container, Button, Row, Col } from 'react-bootstrap'
 
 
-const GeneralGame = () => {
+const GeneralGame = ({ title, getQuestionAPICall, isList = false }) => {
     const [question, setQuestion] = useState([])
     const [answers, setAnswers] = useState([])
     const [correct, setCorrect] = useState([])
-    const [movieId, setMovieId] = useState([])
+    const [movieId, setMovieId] = useState("list")
     const [disabled, setDisabled] = useState(false)
     const [wrongAnswerCount, setCount] = useState(0)
+    const [nextMovieIndex, setnextMovieIndex] = useState(null)
 
     useEffect(async () => {
         await getQuestion()
@@ -19,17 +20,24 @@ const GeneralGame = () => {
     async function getQuestion() {
         setDisabled(false)
         setCount(0)
-        const res = await fetch('api/questions')
+        let res = null
+        if (nextMovieIndex != null) {
+            res = await getQuestionAPICall(nextMovieIndex)
+        }
+        else {
+            res = await getQuestionAPICall()
+        }
         let data = await res.json()
         setQuestion(data.title)
         data.answers = data.answers.map(answer => ({ date: answer, variant: "outline-primary" }));
         setAnswers(data.answers)
         setCorrect(data.correctAnswer)
-        setMovieId(data.movieId)
+        if (data.movieId) setMovieId(data.movieId)
+        if (data.nextMovieIndex) setnextMovieIndex(data.nextMovieIndex)
     }
     async function answerQuestion(answer, index) {
         // Correct answer known by process of elemination
-        if(wrongAnswerCount === (answers.length - 2)){
+        if (wrongAnswerCount === (answers.length - 2)) {
             setDisabled(true)
         }
         // update button visualy 
@@ -45,26 +53,29 @@ const GeneralGame = () => {
         newArr[index] = answer;
         setAnswers(newArr);
 
-        // Update stats in database
-        const res = await fetch(`/api/questions/movies/${movieId}`, {
-            method: 'PUT',
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            }),
-            body: JSON.stringify({
-                answer: answer.date,
-                correctAnswer: correct,
+        if (!isList) {
+            // Update stats in database
+            const res = await fetch(`/api/questions/movies/${movieId}`, {
+                method: 'PUT',
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                }),
+                body: JSON.stringify({
+                    answer: answer.date,
+                    correctAnswer: correct,
+                })
             })
-        })
-        let data = await res.json()
-        // Triggers change event in stats component
-        trigger("statsChanged")
+            let data = await res.json()
+            // Triggers change event in stats component
+            trigger("statsChanged")
+        }
+
     }
     return (
-        <div>
+        <>
             <Container className="form-size pt-5 container-flex justify-content-center">
                 <Card className="p-3 card-sm">
-                    <div className="w-100 container-flex text-center"><h2>Movie Release Dates</h2>
+                    <div className="w-100 container-flex text-center"><h2>{title}</h2>
                         <div className='question-title-wrapper'><h1 className="primary-color"> {question} </h1></div>
                         <Row><Col>
                             {answers.map((answer, index) =>
@@ -78,7 +89,7 @@ const GeneralGame = () => {
                     <Button onClick={getQuestion} variant="primary" type="submit" className="w-100 btn-lg" >Get Next Question</Button>
                 </Card>
             </Container>
-        </div>
+        </>
     )
 }
 

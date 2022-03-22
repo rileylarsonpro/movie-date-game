@@ -22,12 +22,13 @@ export default function Nabar({ }) {
                 <Container>
                     <Navbar.Brand href="/">Movie Trivia Game</Navbar.Brand>
                     <Nav.Link href="/leaderboard">Leaderboard</Nav.Link>
-                    <Nav.Link href="/lists">Lists</Nav.Link>
+                    <Nav.Link href="/publicLists">Lists</Nav.Link>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
                         <NavDropdown title={username} id="basic-nav-dropdown">
-                            <NavDropdown.Item onClick={logOut}>Logout</NavDropdown.Item>
                             <NavDropdown.Item href="/account">Account Details</NavDropdown.Item>
+                            <NavDropdown.Item href="/myLists">My Lists</NavDropdown.Item>
+                            <NavDropdown.Item onClick={logOut}>Logout</NavDropdown.Item>
                         </NavDropdown>
                     </Navbar.Collapse>
                 </Container>

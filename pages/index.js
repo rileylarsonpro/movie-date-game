@@ -3,12 +3,16 @@ import GeneralGame from '../components/GeneralGame'
 import IndividualStats from '../components/IndividualStats'
 import Nabar from '../components/Navbar'
 
+async function getQuestionAPICall() {
+  return await fetch('api/questions')
+}
 
 const Index = (props) => {
+  
   return (
     <>
       <Nabar />
-      <GeneralGame />
+      <GeneralGame title="Movie Release Dates" getQuestionAPICall={getQuestionAPICall}/>
       <IndividualStats />
     </>
     )

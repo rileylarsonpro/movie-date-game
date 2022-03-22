@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Container, Card, Table, Button, Form, Row, Col } from 'react-bootstrap'
+import Router from 'next/router'
 
 
 const MyLists = ({ user }) => {
@@ -18,12 +19,23 @@ const MyLists = ({ user }) => {
         setLists(data)
     }
 
-    async function playList() {
-
+    async function playList(list) {
+        Router.push({
+            pathname: '/listGame',
+            query: { listId: list._id, listName: list.name },
+        })
     }
 
-    async function updateList() {
-        
+    async function updateListItem(list, newBody) {
+        list.name = newBody.name
+        const res = await fetch(`/api/lists/${list._id}`, {
+            method: 'PUT',
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            }),
+            body: JSON.stringify(newBody)
+        })
+        getLists()
     }
 
     async function deleteList(listId) {
@@ -40,7 +52,7 @@ const MyLists = ({ user }) => {
         const res = await fetch(`/api/lists/users/${user._id}`, {
             method: 'POST',
             body: formData
-          })
+        })
         getLists()
         event.target.reset()
     }
@@ -49,7 +61,7 @@ const MyLists = ({ user }) => {
         <>
             <Container className="pt-5">
                 <Card>
-                    <div className="w-100 m-2 container-flex text-center"><h2>Your Lists</h2></div>
+                    <div className="w-100 m-2 container-flex text-center"><h2>{user.username}'s Lists</h2></div>
                     <Table striped bordered hover size="sm">
                         <thead>
                             <tr>
@@ -57,7 +69,6 @@ const MyLists = ({ user }) => {
                                 <th>List Name</th>
                                 <th>Visibilty Status</th>
                                 <th>Play List</th>
-                                <th>Update List</th>
                                 <th>Delete List</th>
                             </tr>
                         </thead>
@@ -65,19 +76,37 @@ const MyLists = ({ user }) => {
                             {lists.map((list, index) =>
                                 <tr key={list._id}>
                                     <td>{index + 1}</td>
-                                    <td>{list.name}</td>
-                                    <td>{list.public ? "public" : "private"}</td>
-                                    <td><Button onClick={playList} variant="primary">Play List</Button></td>
-                                    <td><Button onClick={updateList} variant="info">Update</Button></td>
+                                    <td>
+                                        <Form.Control
+                                            onChange={
+                                                (e) => { setLists(lists.map(el => (el._id === list._id ? {...el, name: e.target.value} : el)))}
+                                            }
+                                            onBlur={(e) => updateListItem(list, { name: e.target.value, public: list.public })}
+                                            value={list.name}
+                                            name="name"
+                                            type="text"
+                                        />
+                                    </td>
+                                    <td>
+                                        <Form.Check
+                                            onChange={(e) => updateListItem(list, { name: list.name, public: e.target.checked })}
+                                            className="mb-2"
+                                            label="Make List Public"
+                                            type="checkbox"
+                                            checked={list.public}
+                                        />
+                                    </td>
+                                    <td><Button onClick={() => playList(list)} variant="primary">Play List</Button></td>
                                     <td><Button onClick={() => deleteList(list._id)} variant="danger">Delete</Button></td>
                                 </tr>
+
                             )}
                         </tbody>
                     </Table>
                 </Card>
                 <Container className="form-size pt-5 container-flex justify-content-center">
                     <Card >
-                        <div className="w-100 m-2 container-flex text-center"><h3>Upload List</h3></div>
+                        <div className="w-100 m-2 container-flex text-center"><h2>Upload List</h2></div>
                         <Form onSubmit={createList}>
                             <Container>
                                 <Form.Group className="mb-3" controlId="name">
@@ -105,6 +134,6 @@ const MyLists = ({ user }) => {
 }
 const mapStateToProps = state => ({
     user: state.auth.user
-}); 
+});
 
 export default connect(mapStateToProps)(MyLists)

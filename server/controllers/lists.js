@@ -3,6 +3,7 @@ const Movie = require('../models/movie.model');
 const List = require('../models/list.model');
 const fs = require('fs');
 const csvParser = require('fast-csv');
+const {formatQuestion} = require('../util')
 
 module.exports = function () {
   return {
@@ -82,18 +83,41 @@ module.exports = function () {
     },
 
     async startMovieList (req, res) {
-
+      const { listId } = req.enforcer.params
+      let list = await List.findById(listId).exec();
+      if (list === null) res.status(404).send(`list with ID ${listId} does not exist.`)
+      // Check if list is private, if so user must be owner
+      else if (!list.public && req.user._id.toString() != list.owner.toString()) res.status(401).send()
+      else if(list.movies.length < 1) res.status(400).send("Empty list")
+      else {
+        list.movies[0].Year = parseInt(list.movies[0].Year)
+        let question = formatQuestion(list.movies[0], 3)
+        if(list.movies.length >= 2) question.nextMovieIndex = 1
+        res.status(200).send(question)
+      }
       
     },
 
     async answerListQuestion (req, res) {
-
+      const { listId } = req.enforcer.params
+      let list = await List.findById(listId).exec();
+      if (list === null) res.status(404).send(`list with ID ${listId} does not exist.`)
+      // Check if list is private, if so user must be owner
+      else if (!list.public && req.user._id.toString() != list.owner.toString()) res.status(401).send()
+      else if (req.body.nextMovieIndex > req.body.nextMovieIndex.length - 1) res.status(400).send("End of List")
+      else {
+        let nextMovieIndex = req.body.nextMovieIndex
+        list.movies[nextMovieIndex].Year = parseInt(list.movies[nextMovieIndex].Year)
+        let question = formatQuestion(list.movies[nextMovieIndex], 3)
+        if(list.movies.length >= 2) question.nextMovieIndex = nextMovieIndex + 1
+        res.status(200).send(question)
+      }
       
     },
 
     async getPublicLists (req, res) {
-
-      
+      let lists = await List.find({ 'public': true }, "owner name public").populate('owner').exec()
+      res.send(lists)
     },
 
   }

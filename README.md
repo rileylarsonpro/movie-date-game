@@ -224,3 +224,5 @@ csv file
 ### Tasks Todo
 - Add unique username enforcement on front and back end
 - Make sure only .csv can be uploaded and check .csv formatting
+- Add sort by options on the leaderboard table 
+- Add Logic to show user they reached the end of the List 
