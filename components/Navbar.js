@@ -21,10 +21,10 @@ export default function Nabar({ }) {
             <Navbar collapseOnSelect expand="sm" bg="light" variant="light">
                 <Container>
                     <Navbar.Brand href="/">Movie Trivia Game</Navbar.Brand>
-                    <Nav.Link href="/leaderboard">Leaderboard</Nav.Link>
-                    <Nav.Link href="/publicLists">Lists</Nav.Link>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                    <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+                    <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end text-right">
+                        <Nav.Link href="/leaderboard">Leaderboard</Nav.Link>
+                        <Nav.Link href="/publicLists">Lists</Nav.Link>
                         <NavDropdown title={username} id="basic-nav-dropdown">
                             <NavDropdown.Item href="/account">Account Details</NavDropdown.Item>
                             <NavDropdown.Item href="/myLists">My Lists</NavDropdown.Item>
