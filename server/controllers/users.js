@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const List = require('../models/list.model');
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 
@@ -35,6 +36,7 @@ module.exports = function () {
       let user = await User.findById(userId).exec();
       if (user === null) res.status(404).send(`User with ID ${userId} does not exist.`)
       else {
+        await List.deleteMany({owner: userId }); 
         await User.deleteOne({ _id: userId })
         res.status(204).send()
       }
