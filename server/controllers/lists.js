@@ -109,7 +109,10 @@ module.exports = function () {
         let nextMovieIndex = req.body.nextMovieIndex
         list.movies[nextMovieIndex].Year = parseInt(list.movies[nextMovieIndex].Year)
         let question = formatQuestion(list.movies[nextMovieIndex], 3)
-        if(list.movies.length >= 2) question.nextMovieIndex = nextMovieIndex + 1
+        if(list.movies.length >= 2 && ((nextMovieIndex + 1) < list.movies.length)) question.nextMovieIndex = nextMovieIndex + 1
+        else{
+          question.nextMovieIndex = -1 // end of list
+        }
         res.status(200).send(question)
       }
       
